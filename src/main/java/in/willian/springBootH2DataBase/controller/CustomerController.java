@@ -49,4 +49,26 @@ public class CustomerController {
         return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
     }
 
+    @PutMapping("/customer/{id}")
+    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) {
+        try {
+            return new ResponseEntity<Customer>(iCustomerRepository.save(customer), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<Customer>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/customer/{id}")
+    public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable Long id) {
+        try {
+            Optional<Customer> customer = iCustomerRepository.findById(id);
+            if (customer.isPresent()) {
+                iCustomerRepository.delete(customer.get());
+            }
+            return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

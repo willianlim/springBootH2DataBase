@@ -27,7 +27,7 @@ public class Customer {
     private String location;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
     @UpdateTimestamp
