@@ -5,12 +5,10 @@ import in.willian.springBootH2DataBase.repository.ICustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CustomerController {
@@ -38,6 +36,17 @@ public class CustomerController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<Customer> getSingleCustomer(@PathVariable Long id) {
+        Optional<Customer> customer = iCustomerRepository.findById(id);
+
+        if (customer.isPresent()) {
+            return new ResponseEntity<Customer>(customer.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
     }
 
 }
